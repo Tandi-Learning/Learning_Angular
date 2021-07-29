@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"npm run server\" \"ng serve\"",
+    "start": "concurrently \"npm run server\" \"ng serve --port 4300\"",
     "server": "json-server db.json --watch",
     "build": "ng build",
     "test": "jest",
