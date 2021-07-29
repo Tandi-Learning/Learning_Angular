@@ -55,6 +55,14 @@ export class ProductListComponent {
 
     this.selectedProduct$ = this.store.select(getCurrentProduct);
 
+    this.store.select(getProducts).subscribe(products => {
+      let p = products;
+    });
+
+    this.store.subscribe(data => {
+      let p = data;
+    });
+
     // TODO: Unsubscribe
     // this.store.select(getShowProductCode).subscribe(
     //   showProductCode => {
