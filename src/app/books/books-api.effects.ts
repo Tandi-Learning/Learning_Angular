@@ -1,5 +1,62 @@
 import { Injectable } from "@angular/core";
 import { createEffect, Actions, ofType } from "@ngrx/effects";
-import {} from "rxjs/operators";
+import { concat, of } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, mergeMap } from "rxjs/operators";
 import { BooksService } from "../shared/services";
 import { BooksPageActions, BooksApiActions } from "./actions";
+
+@Injectable({
+  providedIn:'root'
+})
+export class BooksApiEffect {
+
+	constructor(
+		private action$: Actions,
+		private booksService: BooksService) {	
+	}
+
+	loadBooks$ = createEffect(() => {
+		return this.action$.pipe(
+			ofType(BooksPageActions.enter),
+			exhaustMap(action => 
+				this.booksService.all().pipe(
+					map(books => BooksApiActions.booksLoaded({books})),
+					catchError(error => of(error))
+				)
+			)
+		)
+	});
+
+	createBook$ = createEffect(() => {
+		return this.action$.pipe(
+			ofType(BooksPageActions.createBook),
+			concatMap(action => {
+				return this.booksService.create(action.book).pipe(
+					map(book => BooksApiActions.bookCreated({ book }))
+				)
+			})
+		)
+	});
+
+	updateBook$ = createEffect(() => {
+		return this.action$.pipe(
+			ofType(BooksPageActions.updateBook),
+			concatMap(action => {
+				return this.booksService.update(action.bookId,action.changes).pipe(
+					map(book => BooksApiActions.bookUpdated({ book }))
+				)
+			})
+		)
+	});
+
+	deleteBook$ = createEffect(() => {
+		return this.action$.pipe(
+			ofType(BooksPageActions.deleteBook),
+			mergeMap(action => {
+				return this.booksService.delete(action.bookId).pipe(
+					map(() => BooksApiActions.bookDeleted({ bookId: action.bookId }))
+				)
+			})
+		)
+	});
+}

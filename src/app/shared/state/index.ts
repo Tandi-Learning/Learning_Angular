@@ -1,9 +1,10 @@
-import { ActionReducerMap, createSelector, MetaReducer } from "@ngrx/store";
+import { ActionReducerMap, createFeatureSelector, createSelector, MetaReducer } from "@ngrx/store";
 import * as fromAuth from "./auth.reducer";
 import * as fromBooks from "./books.reducer";
 
+// store global state
 export interface State {
-  books: fromBooks.State
+  books: fromBooks.State  // feature state
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -12,11 +13,14 @@ export const reducers: ActionReducerMap<State> = {
 
 export const metaReducers: MetaReducer<State>[] = [];
 
-export const selectBooksState = (state: State) => state.books;
+export const selectBooksState = createFeatureSelector<fromBooks.State>('books');
+// export const selectBooksState = (state: State) => state.books;
 
 export const selectActiveBook = createSelector(
   selectBooksState,
-  (state) => fromBooks.selectActiveBook(state)
+  (state) => {
+    return fromBooks.selectActiveBook(state)
+  }
 );
 
 export const selectAllBooks = createSelector(

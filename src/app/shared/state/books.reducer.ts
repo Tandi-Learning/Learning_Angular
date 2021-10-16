@@ -1,39 +1,53 @@
-import { createReducer, on, Action, createSelector, createFeatureSelector } from "@ngrx/store";
+import { createReducer, on, Action, createSelector } from "@ngrx/store";
 import { BookModel, calculateBooksGrossEarnings } from "src/app/shared/models";
 import { BooksPageActions, BooksApiActions } from "src/app/books/actions";
-import { state } from "@angular/animations";
+import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 
-const createBook = (books: BookModel[], book: BookModel) => [...books, book];
 
-const updateBook = (books: BookModel[], changes: BookModel) => {
-  return books.map(book => {
-    return book.id === changes.id ? Object.assign({}, book, changes) : book;
-  })
-};
+// const createBook = (books: BookModel[], book: BookModel) => [...books, book];
 
-const deleteBook = (books: BookModel[], bookId: string) => 
-  books.filter(book => book.id !== bookId);
+// const updateBook = (books: BookModel[], changes: BookModel) => {
+//   return books.map(book => {
+//     return book.id === changes.id ? Object.assign({}, book, changes) : book;
+//   })
+// };
 
-export interface State {
-  collection: BookModel[];
+// const deleteBook = (books: BookModel[], bookId: string) => 
+//   books.filter(book => book.id !== bookId);
+
+
+// feature state for books
+// export interface State {
+//   collection: BookModel[];
+//   activeBookId: string | null;
+// };
+export interface State extends EntityState<BookModel> {
   activeBookId: string | null;
 };
 
-export const initialState: State = {
-  collection: [],
-  activeBookId: null
-};
+const adapter: EntityAdapter<BookModel> = createEntityAdapter<BookModel>();
+
+// export const initialState: State = {
+//   collection: [],
+//   activeBookId: null
+// };
+export const initialState: State = adapter.getInitialState({
+  activeBookId: null,
+});
+
+
+export const { selectAll, selectEntities } = adapter.getSelectors();
 
 // const selectAll = createFeatureSelector<BookModel[]>('collection');
-export const selectAll = (state: State) => state.collection;
+// export const selectAll = (state: State) => state.collection;
 
 export const selectActiveBookId = (state: State) => state.activeBookId;
 
 export const selectActiveBook = createSelector(
-  selectAll,
+  selectEntities,
   selectActiveBookId,
-  (books, activeBookId) => { 
-    return books.find(book => book.id === activeBookId);
+  (entities, activeBookId) => { 
+    return activeBookId ? entities[activeBookId] : null;
   }
 );
 
@@ -44,12 +58,12 @@ export const selectEarningTotals = createSelector(
 
 export const booksReducer = createReducer(
   initialState,
-  on(BooksPageActions.enter, (state, action) => {
-    return {
-      ...state,
-      activeBookId: null
-    }
-  }) ,
+  // on(BooksPageActions.enter, (state, action) => {
+  //   return {
+  //     ...state,
+  //     activeBookId: null
+  //   }
+  // }) ,
   on(BooksPageActions.clearSelectedBook, (state, action) => {
     return {
       ...state,
@@ -63,28 +77,45 @@ export const booksReducer = createReducer(
     }
   }),
   on(BooksApiActions.booksLoaded, (state, action) => {
-    return {
-      ...state,
-      collection: action.books
-    }
+    return adapter.setAll(action.books, state);
+    // return {
+    //   ...state,
+    //   collection: action.books
+    // }
   }),
   on(BooksApiActions.bookCreated, (state, action) => {
-    return {
-      collection: createBook(state.collection, action.book),
-      activeBookId: null
-    }
+    return adapter.addOne(
+      action.book,
+      {
+        ...state,
+        activeBookId: null
+      }
+    )
+    // return {
+    //   collection: createBook(state.collection, action.book),
+    //   activeBookId: null
+    // }
   }),
   on(BooksApiActions.bookUpdated, (state, action) => {
-    return {
-      collection: updateBook(state.collection, action.book),
+    return adapter.updateOne({
+      id: action.book.id,
+      changes: action.book
+    },
+    {
+      ...state,
       activeBookId: null
-    };
+    })
+    // return {
+    //   collection: updateBook(state.collection, action.book),
+    //   activeBookId: null
+    // };
   }),
   on(BooksApiActions.bookDeleted, (state, action) => {
-    return {
-      ...state,
-      collection: deleteBook(state.collection, action.bookId)
-    }
+    return adapter.removeOne(action.bookId, state);
+    // return {
+    //   ...state,
+    //   collection: deleteBook(state.collection, action.bookId)
+    // }
   })
 );
 

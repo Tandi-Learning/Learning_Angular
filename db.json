@@ -14,8 +14,14 @@
     },
     {
       "id": "3fe92243-8444-4ee4-bb39-b5460b8919f1",
-      "name": "The Hobbit",
+      "name": "The Hobbit 1",
       "earnings": "100000000",
+      "description": null
+    },
+    {
+      "id": "882f2718-0482-4d94-a33e-41ac38210bb6",
+      "name": "Hobbit 1",
+      "earnings": "12",
       "description": null
     }
   ]

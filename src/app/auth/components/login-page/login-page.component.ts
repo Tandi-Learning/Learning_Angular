@@ -18,7 +18,10 @@ export class LoginPageComponent {
   });
   error$: Observable<string | null> = of(null);
 
+  constructor(private store: Store) { }
+
   onLogin($event: LoginEvent) {
+    
     // Not Implemented
   }
 }
