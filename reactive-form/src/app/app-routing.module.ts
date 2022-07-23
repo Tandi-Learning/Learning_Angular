@@ -4,8 +4,8 @@ import { CustomerComponent } from './customers/customer.component';
 import { CustomerReactiveComponent } from './customers.reactive/customer.reactive.component';
 
 const routes: Routes = [
-  {path:'customers', component: CustomerComponent},
-  {path:'customers-rx', component: CustomerReactiveComponent}
+  {path:'template', component: CustomerComponent},
+  {path:'reactive', component: CustomerReactiveComponent}
 ];
 
 @NgModule({

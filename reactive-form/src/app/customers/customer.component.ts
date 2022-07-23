@@ -11,7 +11,9 @@ import { Customer } from './customer';
 export class CustomerComponent implements OnInit {
   customer = new Customer();
 
-  constructor() { }
+  constructor() {
+    console.log('>>>> template constructor');
+  }
 
   ngOnInit() {
   }
