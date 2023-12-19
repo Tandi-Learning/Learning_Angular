@@ -1,4 +1,4 @@
-import { Ingridient } from 'app/shared';
+import { Ingridient } from '../shared';
 
 export class Recipe {
     public name: string;

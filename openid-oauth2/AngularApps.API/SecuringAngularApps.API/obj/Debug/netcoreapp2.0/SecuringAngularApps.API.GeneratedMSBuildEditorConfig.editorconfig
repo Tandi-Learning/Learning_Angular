@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = SecuringAngularApps.API
+build_property.ProjectDir = c:\Source Codes\Learning_Angular\openid-oauth2\AngularApps.API\SecuringAngularApps.API\

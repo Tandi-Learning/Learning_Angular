@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Ingridient } from 'app/shared';
+import { Ingridient } from '../../app/shared';
 import { ShoppingListService } from './shopping-list.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit {
   items: Ingridient[] = [];
-  selectedItem: Ingridient = null;
+  selectedItem: Ingridient; // = null;
 
   constructor(private shoppingListService: ShoppingListService) { }
 
@@ -21,7 +21,7 @@ export class ShoppingListComponent implements OnInit {
     this.selectedItem = item;
   }
 
-  onCleared(value) {
+  onCleared(value: Ingridient) {
     this.selectedItem = value;
   }
 }

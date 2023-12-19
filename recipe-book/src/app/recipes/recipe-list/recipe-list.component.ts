@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Recipe, RecipeService } from 'app/recipes';
+import { Recipe, RecipeService } from '../../../app/recipes';
 
 @Component({
   selector: 'rb-recipe-list',

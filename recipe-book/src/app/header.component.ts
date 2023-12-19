@@ -14,11 +14,11 @@ export class HeaderComponent implements OnInit {
   }
 
   onStore() {
-    this.recipeService.storeData()
-      .subscribe(
-        (data) => console.log(data),
-        (error) => console.log(error)
-      )
+    // this.recipeService.storeData()
+    //   .subscribe(
+    //     (data) => console.log(data),
+    //     (error) => console.log(error)
+    //   )
   }
 
   onFetch() {

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Ingridient } from "app/shared";
-import { ShoppingListService } from "app/shopping-list";
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Ingridient } from "../../app/shared";
+import { ShoppingListService } from "../../app/shopping-list";
 
 @Component({
   selector: 'rb-shopping-list-add',
@@ -18,10 +18,11 @@ export class ShoppingListAddComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes) {
-    if (changes.item.currentValue === null) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['item'].currentValue === null) {
       this.isAdd = true;
-      this.item = {name: null, amount: null};
+      this.item = {name: '', amount: 0};
+      // this.item = {name: null, amount: null};
     } else {
       this.isAdd = false;
     }

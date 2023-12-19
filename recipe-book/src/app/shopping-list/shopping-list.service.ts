@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Ingridient } from 'app/shared';
+import { Ingridient } from '../../app/shared';
 
 @Injectable()
 export class ShoppingListService {
